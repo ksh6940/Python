@@ -1,0 +1,453 @@
+// 1.0 버전과 1.3 버전의 코드는 존재하지 않습니다. 현재 개발 중인 1.5 버전의 코드입니다. 
+// 코드가 상당히 긴 부분 양해 부탁 드립니다. 이 코드를 최적할 수 있는 방법을 아신다면 아래 메일로 보내주세요
+// gsh6940@naver.com 
+
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
+from datetime import datetime
+from tkinter import *
+
+Class_product_src = None
+Item_product_src = None
+Item_src = None
+
+app = Tk()
+app.title("농산물 가격 조회 프로그램")
+app.geometry('480x600')
+browser = webdriver.Chrome()
+label_1 = Label(app, text='부류')
+txt_1 = Text(app, width=35, height=3)
+txt_1.insert(END, "식량작물, 채소류, 특용작물, 과일류, 수산물")
+label_2 = Label(app, text='품목')
+txt_2 = Text(app, width=35, height=10)
+label_3 = Label(app, text='품종')
+txt_3 = Text(app, width=35, height=4)
+label_4 = Label(app, text="실행 결과")
+output = Text(app, width=35, height=3)
+
+def input_1():
+    global Class_product_src
+    Class_product_src = str(txt_1.get("1.0", "end")).strip()    
+
+    if Class_product_src == "식량작물":
+         Class_product = 100
+    elif Class_product_src == "채소류":
+         Class_product = 200
+    elif Class_product_src == "특용작물":
+         Class_product = 300
+    elif Class_product_src == "과일류":
+         Class_product = 400
+    elif Class_product_src == "수산물":
+         Class_product = 500
+    else:
+        print("인식 실패")
+
+    btn_1.config(state=DISABLED)
+
+    browser.implicitly_wait(10)
+
+    Select_1 = Select(browser.find_element(By.NAME, 'itemCategoryCode'))
+
+    browser.implicitly_wait(10)
+
+    Select_1.select_by_value(f'{Class_product}')
+    if Class_product == 100:
+         txt_2.insert(END, "쌀, 찹쌀, 콩, 팥, 녹두, 메밀, 고구마, 감자")
+    elif Class_product == 200:
+         txt_2.insert(END, "배추, 양배추, 시금치, 얼갈이배추,  갓, 수박, 참외, 오이, 호박, 토마토, 딸기, 무, 당근, 열무, 건고추, 풋고추, 붉은고추, 피마늘, 양파, 파, 생강, 고춧가루, 미나리, 깻잎, 피망, 파프리카, 멜론, 깐마늘(국산), 깐마늘(수입), 방울토마토")
+    elif Class_product == 300:
+         txt_2.insert(END, "참깨, 들깨, 땅콩, 느타리버섯, 팽이버섯, 새송이버섯, 호두, 아몬드")
+    elif Class_product == 400:
+         txt_2.insert(END, "사과, 배, 복숭아, 포도, 감귤, 단감, 바나나, 참다래, 파인애플, 오렌지, 자몽, 레몬, 체리, 건포도, 건블루베리, 망고")
+    elif Class_product == 500:
+         txt_2.insert(END, "해당 프로그램은 지원하지 않는 영역입니다. 다른 프로그램을 이용해주시기 바랍니다.")    
+    else:
+         print('선택한 것이 없습니다.')
+
+
+def input_2():
+    global Item_product_src
+    Item_product_src = str(txt_2.get("1.0", "end")).strip()
+    if Item_product_src == "쌀":
+            txt_3.insert(END, "일반계, 햇일반계")
+    elif Item_product_src == "콩":
+            txt_3.insert(END, "백태(국산), 백태(수입), 콩나물콩")
+    elif Item_product_src == "적두":
+            txt_3.insert(END, "적두(국산), 적두(수입)")
+    elif Item_product_src == "녹두" or Item_product_src == "들깨" or Item_product_src == "땅콩" or Item_product_src == "생강":
+            txt_3.insert(END, "국산, 수입")
+    elif Item_product_src == "감자":
+            txt_3.insert(END, "감자, 수미, 머지마")
+    elif Item_product_src == "배추" or Item_product_src == "무":
+            txt_3.insert(END, "봄, 고랭지, 가을, 월등")
+    elif Item_product_src == "상추":
+            txt_3.insert(END, "적, 청")
+    elif Item_product_src == "오이":
+            txt_3.insert(END, "가시계통, 다다기계통, 취청")
+    elif Item_product_src == "호박":
+            txt_3.insert(END, "애호박, 쥬키니")
+    elif Item_product_src == "당근":
+            txt_3.insert(END, "당근, 무세척, 세척, 세척(수입)")
+    elif Item_product_src == "건고추":
+            txt_3.insert(END, "화건, 햇산화건, 양건, 햇산양건, 수입")
+    elif Item_product_src == "풋고추":
+            txt_3.insert(END, "풋고추, 꽈리고추, 청양고추")
+    elif Item_product_src == "피마늘":
+            txt_3.insert(END, "한지1접, 난지1접, 한지, 난지, 햇한지1접, 햇난지1접, 쪽마늘, 햇한지, 햇난지")
+    elif Item_product_src == "양파":
+            txt_3.insert(END, "양파, 햇양파, 수입")
+    elif Item_product_src == "파":
+            txt_3.insert(END, "대파, 쪽파")
+    elif Item_product_src == "고춧가루":
+            txt_3.insert(END, "국산, 중국")
+    elif Item_product_src == "깐마늘(국산)":
+            txt_3.insert(END, "깐마늘(국산), 깐마늘(대서), 깐마늘(남도)")
+    elif Item_product_src == "참깨":
+            txt_3.insert(END, "백색(국산), 중국, 인도")
+    elif Item_product_src == "느타리버섯":
+            txt_3.insert(END, "느타리버섯, 애느타리버섯")
+    elif Item_product_src == "사과":
+            txt_3.insert(END, "홍옥, 후지, 쓰가루, 홍로")
+    elif Item_product_src == "배":
+            txt_3.insert(END, "신고, 만삼길, 장십랑, 원황")
+    elif Item_product_src == "복숭아":
+            txt_3.insert(END, "백도, 창방조생, 유명")
+    elif Item_product_src == "포도":
+            txt_3.insert(END, "캠벨얼리, 거봉, 델라웨어, MBA, 수입, 레드글로브 칠레, 레드글로브 페루, 톰슨 미국, 톰슨 호주")
+    elif Item_product_src == "감귤":
+            txt_3.insert(END, "감귤, 노지, 시설")
+    elif Item_product_src == "참다래":
+            txt_3.insert(END, "국산, 그린 뉴질랜드")
+    elif Item_product_src == "오렌지":
+            txt_3.insert(END, "수입, 네이블 미국, 발렌시아 미국, 네이블 EU, 네이블 호주")
+    else:
+            txt_3.insert(END, "해당 란을 지우고 버튼을 클릭하세요")
+    btn_2.config(state=DISABLED)
+
+def input_3():
+    global Item_src 
+    Item_src = str(txt_3.get("1.0", "end")).strip()
+    if Class_product_src == "식량작물":
+        if Item_product_src == "쌀":
+            Item_product = 111
+            if Item_src == "일반계":
+                Item = 11101
+            else:
+                Item = 11105
+        elif Item_product_src == "찹쌀":
+            Item_product = 112
+            Item = 11201
+        elif Item_product_src == "콩":
+            Item_product = 141
+            if Item_src == "백태(국산)":
+                Item = 14101
+            elif Item_src == "콩나물콩":
+                Item = 14102
+            else:
+                Item = 14103
+        elif Item_product_src == "팥":
+            Item_product = 142
+            if Item_src == "적두(국산)":
+                Item = 14200
+            else:
+                Item = 14201
+        elif Item_product_src == "녹두":
+            Item_product = 143
+            if Item_src == "국산":
+                Item = 14300
+            else:
+                Item = 14301
+        elif Item_product_src == "메밀":
+            Item_product = 144
+            Item = 14401
+        elif Item_product_src == "고구마":
+            Item_product = 151
+            Item = 15100
+        else:
+            Item_product = 152
+            if Item_src == "감자":
+                Item = 15200
+            elif Item_src == "수미":
+                Item = 15201
+            else:
+                Item = 15203
+    elif Class_product_src == "채소류":
+        if Item_product_src == "배추":
+            Item_product = 211
+            if Item_src == "봄":
+                Item = 21101
+            elif Item_src == "고랭지":
+                Item = 21102
+            elif Item_src == "가을":
+                Item = 21103
+            else:
+                Item = 21106
+        elif Item_product_src == "양배추":
+            Item_product = 212
+            Item = 21200
+        elif Item_product_src == "시금치":
+            Item_product = 213 
+            Item = 21300
+        elif Item_product_src == "상추":
+            Item_product = 214
+            if Item_src == "적":
+                Item = 21401
+            else:
+                 Item = 21402
+        elif Item_product_src == "얼갈이배추":
+            Item_product = 215
+            Item = 21500
+        elif Item_product_src == '갓':
+            Item_product = 216
+            Item = 21600
+        elif Item_product_src == "수박":
+            Item_product = 221
+            Item = 22100
+        elif Item_product_src == "참외":
+            Item_product = 222
+            Item = 22200
+        elif Item_product_src == "오이":
+            Item_product = 223
+            if Item_src == "가시계통":
+                Item = 22301
+            elif Item_src == "다다기계통":
+                Item = 22302
+            else:
+                Item = 22303
+        elif Item_product_src == "호박":
+            Item_product = 224
+            if Item_src == "애호박":
+                Item = 22401
+            else:
+                Item = 22402
+        elif Item_product_src == "토마토":
+            Item_product = 225
+            Item = 22500
+        elif Item_product_src == "딸기":
+            Item_product = 226
+            Item = 22600
+        elif Item_product_src == "무":
+            Item_product = 231
+            if Item_src == "봄":
+              Item = 23101
+            elif Item_src == "고랭지":
+                 Item = 23102
+            elif Item_src == "가을":
+                Item = 23103
+            else:
+                Item = 23106
+        elif Item_product_src == "당근":
+            Item_product = 232
+            if Item_src == "당근":
+              Item = 23200
+            elif Item_src == "무세척":
+                 Item = 23201
+            elif Item_src == "세척":
+                Item = 23202
+            else:
+                Item = 23210
+        elif Item_product_src == "열무":
+            Item_product = 233
+            Item = 23300
+        elif Item_product_src == "건고추":
+            Item_product = 241
+            if Item_src == "화건":
+                Item = 23100
+            elif Item_src == "햇산화건":
+                Item = 23101
+            elif Item_src == "양건":
+                Item = 23102
+            elif Item_src == "햇산양건":
+                Item = 24103
+            else:
+                Item = 24110
+        elif Item_product_src == "풋고추":
+            Item_product = 242
+            if Item_src == "풋고추":
+                Item = 24200
+            elif Item_src == "꽈리고추":
+                Item = 24202
+            else:
+                Item = 24203
+        elif Item_product_src == "붉은고추":
+            Item_product = 243
+            Item = 24300
+        elif Item_product_src == "피마늘":
+            Item_product = 244
+            if Item_src == "한지1접":
+                Item = 24401
+            elif Item_src == "난지1접":
+                Item = 24402
+            elif Item_src == "한지":
+                Item = 24403
+            elif Item_src == "난지":
+                Item = 24404
+            elif Item_src == "햇한지1접":
+                Item = 24406
+            elif Item_src == "햇난지1접":
+                Item = 24407
+            elif Item_src == "쪽마늘":
+                Item = 24408
+            elif Item_src == "햇한지":
+                Item = 24411
+            else:
+                Item = 24412
+        elif Item_product_src == "양파":
+            Item_product = 245
+            if Item_src == "양파":
+                Item = 24500
+            elif Item_src == "햇양파":
+                Item = 24502
+            else:
+                Item = 24510
+        elif Item_product_src == "파":
+            Item_product = 246
+            if Item_src == "화건":
+                Item = 24600
+            else:
+                Item = 24602
+        elif Item_product_src == "생강":
+            Item_product = 247
+            if Item_src == "국산":
+                Item = 24700
+            else:
+                Item = 24701
+        elif Item_product_src == "고춧가루":
+            Item_product = 248
+            if Item_src == "국산":
+                Item = 24800
+            else:
+                Item = 24801
+        elif Item_product_src == "미나리":
+            Item_product = 252
+            Item = 25200
+        elif Item_product_src == "깻잎":
+            Item_product = 253
+            Item = 25300
+        elif Item_product_src == "피망":
+            Item_product = 255
+            Item = 25500
+        elif Item_product_src == "파프리카":
+            Item_product = 256
+            Item = 25600
+        elif Item_product_src == "건고추":
+            Item_product = 257
+            Item = 25700
+        elif Item_product_src == "깐마늘(국산)":
+            Item_product = 258
+            if Item_src == "깐마늘(국산)":
+                Item = 25801
+            elif Item_src == "깐마늘(대서)":
+                Item = 25803
+            else:
+                Item = 25805
+        elif Item_product_src == "깐마늘(수입)":
+            Item_product = 259
+            if Item_src == "깐마늘(수입)":
+                Item = 25901
+            else:
+                Item = 25903
+        elif Item_product_src == "방울토마토":
+            Item_product = 422
+            Item = 42201
+        elif Item_product_src == "참깨":
+            Item_product = 312
+            if Item_src == "백색(국산)":
+                Item = 31201
+            elif Item_src == '중국':
+                Item = 31202
+            else:
+                Item = 31203
+        elif Item_product_src == "들깨":
+            Item_product = 313
+            if Item_src == "국산":
+                Item = 31301
+            else:
+                Item = 31302
+        elif Item_product_src == "땅콩":
+            Item_product = 314
+            if Item_src == "국산":
+                Item = 3140
+            else:
+                Item = 31302
+            
+    else:
+        print("선택한 항목이 존재하지 않음")
+
+    btn_3.config(state=DISABLED)
+    Select_2 = Select(browser.find_element(By.NAME, 'itemCode'))
+    Select_2.select_by_value(f'{Item_product}')
+    browser.implicitly_wait(10)
+    Select_3 = Select(browser.find_element(By.NAME, 'kindCode'))
+    Select_3.select_by_value(f'{Item}')
+    browser.implicitly_wait(10)
+    browser.find_element(By.ID, 'search_btn').click()
+
+
+    
+def generate():
+    table = browser.find_element(By.CLASS_NAME, 'text_right')
+    data_text = table.text
+
+    now = datetime.now()
+    year = now.year
+    month = now.month
+    day = now.day
+    
+    if Item_src == Item_product_src: 
+         item_text = f'{year}년 {month}월 {day}일 기준 : {Item_product_src}의 가격은 {data_text}원입니다.'
+    elif Item_src == None:
+         item_text = f'{year}년 {month}월 {day}일 기준 : {Item_product_src}의 가격은 {data_text}원입니다.'
+    else:
+        item_text = f'{year}년 {month}월 {day}일 기준 : {Item_src} {Item_product_src}의 가격은 {data_text}원입니다.'
+
+    output.insert(END, f"{item_text}")
+
+    run_btn.config(state=DISABLED)
+
+def reset():
+    browser.get(url)
+    btn_1.config(state=NORMAL)
+    btn_2.config(state=NORMAL)
+    btn_3.config(state=NORMAL)
+    run_btn.config(state=NORMAL)
+
+    txt_1.delete("1.0", END)
+    txt_1.insert(END, "식량작물, 채소류, 특용작물, 과일류, 수산물")
+    txt_2.delete("1.0", END)
+    txt_3.delete("1.0", END)
+    output.delete("1.0", END)
+    
+    global Class_product_src, Item_product_src, Item_src
+    Class_product_src = None
+    Item_product_src = None
+    Item_src = None
+
+    
+
+url = 'https://www.price.go.kr/tprice/portal/pricetrend/agriculturalprice/agriculturalPrice.do'
+browser.get(url)
+
+btn_1 = Button(app, text="부류 선택", command=input_1)
+btn_2 = Button(app, text="품목 선택", command=input_2)
+btn_3 = Button(app, text="품종 선택", command=input_3)
+run_btn = Button(app, text='실행', command=generate)
+btn_reset = Button(app, text='초기화', command=reset)
+
+label_1.pack()
+txt_1.pack()
+btn_1.pack()
+label_2.pack()
+txt_2.pack()
+btn_2.pack()
+label_3.pack()
+txt_3.pack()
+btn_3.pack()
+label_4.pack()
+output.pack()
+run_btn.pack()
+btn_reset.pack()
+
+app.mainloop()
